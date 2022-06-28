@@ -31,7 +31,7 @@ def CreateTemplateForSamples(PgMatrix, OutputDirectory):
 
 
 def TidyPgMatrixFromMappingFile(PgMatrix, MappingFilePath, OutputDirectory):
-    
+
     Mapping = pd.read_csv(MappingFilePath)
 
     # Create MultiIndex
@@ -49,13 +49,13 @@ if __name__ == "__main__":
     import sys
 
     print("Initiating with args: ", sys.argv)
-    
+
     Path_PgMatrix = sys.argv[1]
-    
+
     Folder = os.path.split(Path_PgMatrix)[0]
     PgMatrix = ReadPgMatrix(Path_PgMatrix)
-    
-    
+
+
     try:
         CreateTemplateForSamples(PgMatrix=PgMatrix, OutputDirectory=Folder)
         print('Please edit the mapping.csv file and re-run the script!')
@@ -66,7 +66,7 @@ if __name__ == "__main__":
             'Tidying the PgMatrix..')
         input_ = 'continue'
 
-    
+
     if input_ == 'continue':
         MappingFilePath = os.path.join(Folder, 'mapping.csv')
         TidyPgMatrixFromMappingFile(PgMatrix=PgMatrix,
@@ -77,4 +77,4 @@ if __name__ == "__main__":
     else:
         print('Exiting script from the else statement! Please debug!')
         exit(0)
-        
+

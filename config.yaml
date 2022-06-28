@@ -1,0 +1,22 @@
+# Parameters
+DataDirectory: '/Users/onurserce/Desktop/new'
+Path_PgMatrix: '/Users/onurserce/Desktop/new/report.pg_matrix.tsv'
+
+# Camera parameters
+cameraMake: "flir"
+numCams: 1
+cameraSelection: [0]
+
+# cameraSettings: "./campy/cameras/basler/settings/acA1920-150uc_1152x1024p_100fps_trigger_RGB_p6.pfs"
+cameraNames: ['Camera1']
+
+# Compression parameters
+ffmpegLogLevel: ["warning"]
+gpuID: -1
+pixelFormatInput: 'bayer_rggb8' #'bayer_bggr8' 'rgb24'
+
+# Display parameters
+chunkLengthInSec: 30
+
+# Other parameters
+ffmpegPath: [] #["/home/usr/Documents/ffmpeg/ffmpeg"]
