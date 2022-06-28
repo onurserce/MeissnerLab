@@ -10,9 +10,9 @@ import os
 
 
 def ReadPgMatrix(Path_PgMatrix, sep='\t', index_col=0):
-    
+
     PgMatrix = pd.read_csv(Path_PgMatrix, sep="\t", index_col=0)
-    
+
     return PgMatrix
 
 
@@ -77,4 +77,3 @@ if __name__ == "__main__":
     else:
         print('Exiting script from the else statement! Please debug!')
         exit(0)
-
