@@ -13,7 +13,7 @@ from tqdm import tqdm
 PgMatrix = ReadPgMatrix("/Users/onurserce/Desktop/THP1 proteome/TidyPgMatrix.hdf")
 
 
-def ImputeFromReplicates(PgMatrix, ThresholdRatio=0.65):
+def ImputeFromReplicates(PgMatrix, ThresholdRatio=0.66):
     """Imputation from replicates."""
     PgMatrix = PgMatrix.sort_index(axis=1)
     NaBeforeImputation = PgMatrix.isna()
@@ -27,25 +27,35 @@ def ImputeFromReplicates(PgMatrix, ThresholdRatio=0.65):
     for U in tqdm(Unique,
                   desc="Imputing missing data using 'Replicate' averages"):
         Slice = PgMatrix.loc[:, U]  # Get the current group of replicates
+        Averages = Slice.mean(axis=1)
         NReplicates = len(PgMatrix.loc[:, U].columns)  # Count of replicates
         OverThreshold = (
             Slice.notna().sum(axis=1) / NReplicates
             ) >= ThresholdRatio  # Check if the row is above the threshold
-        ToBeImputedMask = Slice.notna()[OverThreshold]  # Create a mask
+        # A9QM74 is not over the threshold
+        Missing = Slice.isna().any(axis=1)  # Rows with missing values
+        Impute = OverThreshold & Missing  # Impute boolean
+        PgsToImpute = Impute[Impute == True].index  # Proteins to impute
 
-        ImputedSlice = Slice.where(
-            ToBeImputedMask,
-            Slice.mean(axis=1),
-            axis=0).to_numpy()  # Imputation with the mean
-        PgMatrix.loc[:, U] = ImputedSlice  # Back into the DataFrame
-        # Conversion to NDArray is necessary!
+        print(
+            'Slice', U, ':',
+            len(PgsToImpute), 'PGs will be imputed from replicates.')
+        ImputedSlice = Slice.T.fillna(Averages.loc[PgsToImpute]).T
+        PgMatrix.loc[:, U] = ImputedSlice.values  # Back into the DataFrame
 
-        NaAfterImputation = PgMatrix.isna()
-        Imputed = NaAfterImputation != NaBeforeImputation
-        NotImputed = NaAfterImputation & NaBeforeImputation
+    NaAfterImputation = PgMatrix.isna()
+    ImputedEntries = NaAfterImputation != NaBeforeImputation
+    UnimputedEntries = NaAfterImputation & NaBeforeImputation
+    # TODO: Check ImputedEntries and UnimputedEntries matrices..
 
-    return PgMatrix, Imputed, NotImputed
+    return PgMatrix, ImputedEntries, UnimputedEntries
 
 
 def ImputeWithDownshift():
+    """To be implemented."""
     pass
+
+
+if __name__ == "__main__":
+    import sys
+    print("Initiating with args: ", sys.argv)
