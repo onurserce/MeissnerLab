@@ -32,7 +32,6 @@ def ImputeFromReplicates(PgMatrix, ThresholdRatio=0.66):
         OverThreshold = (
             Slice.notna().sum(axis=1) / NReplicates
             ) >= ThresholdRatio  # Check if the row is above the threshold
-        # A9QM74 is not over the threshold
         Missing = Slice.isna().any(axis=1)  # Rows with missing values
         Impute = OverThreshold & Missing  # Impute boolean
         PgsToImpute = Impute[Impute == True].index  # Proteins to impute
@@ -44,11 +43,10 @@ def ImputeFromReplicates(PgMatrix, ThresholdRatio=0.66):
         PgMatrix.loc[:, U] = ImputedSlice.values  # Back into the DataFrame
 
     NaAfterImputation = PgMatrix.isna()
-    ImputedEntries = NaAfterImputation != NaBeforeImputation
-    UnimputedEntries = NaAfterImputation & NaBeforeImputation
-    # TODO: Check ImputedEntries and UnimputedEntries matrices..
+    ImputedBool = NaAfterImputation != NaBeforeImputation
+    SkippedImputationBool = NaAfterImputation & NaBeforeImputation
 
-    return PgMatrix, ImputedEntries, UnimputedEntries
+    return PgMatrix, ImputedBool, SkippedImputationBool
 
 
 def ImputeWithDownshift():
