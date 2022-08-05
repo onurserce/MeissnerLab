@@ -36,3 +36,21 @@ def CreateTidyingTemplateFromPgMatrix(PgMatrix, OutputDirectory):
     else:
         raise Exception(
             os.path.join(OutputDirectory, 'mapping.csv') + ' already exists!')
+
+
+def ImputeWithDownshift(df, shift = 1.8, width = 0.3):
+
+    df_imp = df.copy()
+
+    for column in df_imp.columns:
+
+        mu = df_imp[column].mean()
+        std = df_imp[column].std()
+
+        for i in range(len(df_imp)):
+
+            if df_imp[column][i] != df_imp[column][i]:
+                df_imp[column][i] = np.random.normal(mu - shift*std, width*std, 1)
+
+
+    return df_imp
