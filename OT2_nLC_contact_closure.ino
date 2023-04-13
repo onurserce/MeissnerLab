@@ -1,6 +1,8 @@
 /*
 (Long awaited) contact closure - Meissner Lab
 Script establishes interface between OpenTrons liquid handling robot and ThermoFischer nanoLC.
+LC contact closure state at start must be set to "Close"
+Arduino should be powered with an external adaptor (bug: grounding issues)
 Arduino should be connected to OpenTrons Raspberry Pi via USB, and pin 2 and ground should be connected to nanoLC.
 Script reads pin 2 and then sends a contact closure start or stop signal over serial (USB) to OpenTrons.
 created on 20230412
@@ -26,11 +28,11 @@ void loop() {
  contactClosure = digitalRead(PIN);
    if (contactClosure == LOW) {
  // turn LED on and relay the signal over serial:
- Serial.println("Contact_Closure_Start");
+ Serial.println("Contact_Closure_Stop");
  }
  else {
  // turn LED off and relay the signal over serial:
- Serial.println("Contact_Closure_Stop");
+ Serial.println("Contact_Closure_Start");
  }
  delay(1);  // delay in between reads for stability
 }
