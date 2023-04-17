@@ -1,8 +1,8 @@
 /*
-(Long awaited) contact closure - Meissner Lab
-Script establishes interface between OpenTrons liquid handling robot and ThermoFischer nanoLC.
+Contact closure - Meissner Lab
+Script establishes interface between OpenTrons liquid handling robot and ThermoFisher easy nLC 1200.
 LC contact closure state at start must be set to "Close"
-Arduino should be powered with an external adaptor (bug: grounding issues)
+Arduino should be powered with an external adaptor (bug: not clear why, grounding issues?)
 Arduino should be connected to OpenTrons Raspberry Pi via USB, and pin 2 and ground should be connected to nanoLC.
 Script reads pin 2 and then sends a contact closure start or stop signal over serial (USB) to OpenTrons.
 created on 20230412
